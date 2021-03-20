@@ -10,15 +10,26 @@
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  `go get -u github.com/mikeside/go-unzip`
+2.  `go get -u gitee.com/mikehub/go-unzip`
 
-#### 使用说明
+#### Examples
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+    package main
+    
+    import (
+        "github.com/artdarek/go-unzip"
+        "fmt"
+    )
+    
+    func main() {
+        uz := unzip.New("file.zip", "directory/")
+        err := uz.Extract()
+        if err != nil {
+            fmt.Println(err)
+        }
+    }
+
 
 #### 参与贡献
 
