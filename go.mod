@@ -1,4 +1,4 @@
-module mikeside/go-unzip
+module github.com/mikeside/go-unzip
 
 go 1.16
 
