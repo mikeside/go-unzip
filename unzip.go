@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"unicode/utf8"
 )
 
 type Unzip struct {
@@ -31,15 +32,14 @@ func (uz Unzip) Extract() error {
 
 	var decodeName string
 	for _, f := range zipReader.File {
-		if f.Flags == 0 || f.Flags == 2{
-			//如果标致位是0  则是默认的本地编码   默认为gbk
-			i:= bytes.NewReader([]byte(f.Name))
-			decoder := transform.NewReader(i, simplifiedchinese.GB18030.NewDecoder())
-			content,_:= ioutil.ReadAll(decoder)
-			decodeName = string(content)
-		}else{
-			//如果标志为是 1 << 11也就是 2048  则是utf-8编码
+
+		if utf8.Valid([]byte(f.Name)) {
 			decodeName = f.Name
+		} else {
+			i := bytes.NewReader([]byte(f.Name))
+			decoder := transform.NewReader(i, simplifiedchinese.GB18030.NewDecoder())
+			content, _ := ioutil.ReadAll(decoder)
+			decodeName = string(content)
 		}
 
 		fpath := filepath.Join(uz.Dest, decodeName)
